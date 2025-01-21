@@ -1,0 +1,17 @@
+{
+  "name": "discord-auto-chat",
+  "version": "1.0.0",
+  "description": "ini adalah bot discord auto chat",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app/main.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "chalk": "^5.4.1",
+    "figlet": "^1.8.0"
+  },
+  "author": "Imamgg",
+  "license": "ISC"
+}
