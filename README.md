@@ -95,4 +95,3 @@ Before you begin, ensure you have the following installed:
 
 2. **Customize your configuration**:
 - You can modify the `config.json` file to add more tokens, channel IDs, and adjust delays as needed.
-- If you wish to make further changes, feel free to explore and modify the script according to your preferences.
