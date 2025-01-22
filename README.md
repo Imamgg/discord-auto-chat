@@ -25,9 +25,6 @@ Before you begin, ensure you have the following installed:
     ```
 
 3. **Configure your `config.json`**:
-    ```bash
-    nano config/config.json
-    ```
     In the same directory as the script with the following structure:
     ```json
     {
@@ -45,9 +42,6 @@ Before you begin, ensure you have the following installed:
     }
 
 4. **Configure the `chat.txt` file**:
-    ```bash
-    nano config/chat.txt
-    ```
     With the messages you want the bot to send. Each message should be on a new line.
 
 ## How to Get Discord Token
