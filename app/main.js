@@ -1,1 +1,349 @@
-const a0_0x38e706=a0_0x3cdf;(function(_0x3cfeac,_0x36c734){const _0x4ddf2e=a0_0x3cdf,_0x96db55=_0x3cfeac();while(!![]){try{const _0x539eb0=-parseInt(_0x4ddf2e(0x99))/0x1*(-parseInt(_0x4ddf2e(0xc9))/0x2)+parseInt(_0x4ddf2e(0xda))/0x3*(parseInt(_0x4ddf2e(0xe2))/0x4)+-parseInt(_0x4ddf2e(0x9d))/0x5+parseInt(_0x4ddf2e(0xb1))/0x6*(-parseInt(_0x4ddf2e(0xcf))/0x7)+parseInt(_0x4ddf2e(0xb3))/0x8+parseInt(_0x4ddf2e(0xc4))/0x9+parseInt(_0x4ddf2e(0x91))/0xa*(parseInt(_0x4ddf2e(0x95))/0xb);if(_0x539eb0===_0x36c734)break;else _0x96db55['push'](_0x96db55['shift']());}catch(_0x76c6d8){_0x96db55['push'](_0x96db55['shift']());}}}(a0_0x3b60,0x3149c));import a0_0x52d5eb from'fs';import a0_0x3c4bbe from'axios';import a0_0x4c15d8 from'chalk';import a0_0xbdf5c6 from'figlet';function a0_0x3cdf(_0x4ed293,_0x39b552){const _0x3b6046=a0_0x3b60();return a0_0x3cdf=function(_0x3cdf07,_0x23265f){_0x3cdf07=_0x3cdf07-0x87;let _0x3bf86d=_0x3b6046[_0x3cdf07];return _0x3bf86d;},a0_0x3cdf(_0x4ed293,_0x39b552);}import{ChatGoogleGenerativeAI}from'@langchain/google-genai';import{PromptTemplate}from'@langchain/core/prompts';import{StringOutputParser}from'@langchain/core/output_parsers';const DISCORD_API_BASE_URL=a0_0x38e706(0xe1),CONFIG_FILE_PATH='config/config.json',MESSAGES_FILE_PATH=a0_0x38e706(0xad);function displayWelcomeBanner(){const _0x52b94a=a0_0x38e706;console[_0x52b94a(0xbe)](a0_0x4c15d8['blue'](a0_0xbdf5c6[_0x52b94a(0xd7)](_0x52b94a(0xc6),{'font':_0x52b94a(0xe3),'horizontalLayout':_0x52b94a(0xcd),'verticalLayout':_0x52b94a(0xcd),'width':0x50,'whitespaceBreak':!![]}))),console[_0x52b94a(0xbe)](a0_0x4c15d8[_0x52b94a(0xcc)]('='[_0x52b94a(0xe0)](0x32))),console[_0x52b94a(0xbe)](a0_0x4c15d8[_0x52b94a(0xcc)](_0x52b94a(0xaa))),console[_0x52b94a(0xbe)](a0_0x4c15d8[_0x52b94a(0xcc)](_0x52b94a(0xb6))),console['log'](a0_0x4c15d8[_0x52b94a(0xcc)]('='[_0x52b94a(0xe0)](0x32)));}class DiscordAutoChat{constructor(_0x3425bb){const _0x434e23=a0_0x38e706;this['apiUrl']=DISCORD_API_BASE_URL,this[_0x434e23(0xcb)]={'Authorization':_0x3425bb},this[_0x434e23(0xc7)]=null;}[a0_0x38e706(0xb4)](_0x57aa7c){const _0x29299b=a0_0x38e706;return _0x57aa7c[_0x29299b(0xd1)]['id']===this[_0x29299b(0x92)];}async[a0_0x38e706(0xac)](){const _0x27640e=a0_0x38e706,_0xfc7fd6=await this[_0x27640e(0x87)]();return this['userInfo']=_0xfc7fd6['username']+'#'+_0xfc7fd6[_0x27640e(0xc0)],this[_0x27640e(0x92)]=_0xfc7fd6['id'],this;}async[a0_0x38e706(0x87)](){const _0x1ad21d=a0_0x38e706;try{const _0x4d12a3=await a0_0x3c4bbe[_0x1ad21d(0xdb)](this[_0x1ad21d(0xa0)]+'/users/@me',{'headers':this[_0x1ad21d(0xcb)]});return _0x4d12a3[_0x1ad21d(0x94)];}catch(_0x2aeda5){throw new Error(_0x1ad21d(0xdf)+_0x2aeda5[_0x1ad21d(0xc5)]);}}async[a0_0x38e706(0xc8)](_0xda91d4,_0x23d883){const _0x97fea=a0_0x38e706;try{const _0x3720d7=await a0_0x3c4bbe[_0x97fea(0x88)](this['apiUrl']+'/channels/'+_0xda91d4+_0x97fea(0xce),{'content':_0x23d883},{'headers':this['headers']});return _0x3720d7[_0x97fea(0x94)];}catch(_0x36374d){throw new Error('Failed\x20to\x20send\x20message:\x20'+_0x36374d[_0x97fea(0xc5)]);}}async[a0_0x38e706(0xa1)](_0x4922d4,_0x78e2d2=0x32){const _0x896b6b=a0_0x38e706;try{const _0x1e0477=await a0_0x3c4bbe[_0x896b6b(0xdb)](this[_0x896b6b(0xa0)]+_0x896b6b(0x8d)+_0x4922d4+_0x896b6b(0xa6)+_0x78e2d2,{'headers':this[_0x896b6b(0xcb)]});return _0x1e0477[_0x896b6b(0x94)];}catch(_0x333cfb){throw new Error('Failed\x20to\x20fetch\x20messages:\x20'+_0x333cfb[_0x896b6b(0xc5)]);}}async[a0_0x38e706(0xbb)](_0x4b4468,_0x2e1742,_0x176810){const _0x58309e=a0_0x38e706;try{const _0x26a762=await a0_0x3c4bbe[_0x58309e(0x88)](this[_0x58309e(0xa0)]+_0x58309e(0x8d)+_0x4b4468+_0x58309e(0xce),{'content':_0x176810,'message_reference':{'message_id':_0x2e1742,'channel_id':_0x4b4468}},{'headers':this['headers']});return _0x26a762[_0x58309e(0x94)];}catch(_0x2f8f88){throw new Error('Failed\x20to\x20reply\x20to\x20message:\x20'+_0x2f8f88[_0x58309e(0xc5)]);}}async[a0_0x38e706(0xdc)](_0x513ab0){const _0x25ba55=a0_0x38e706;try{const _0x40d456=await this['createGeminiChain'](),_0x3dc3e0=await _0x40d456[_0x25ba55(0xa4)]({'message':_0x513ab0});return _0x3dc3e0;}catch(_0x1addf1){return console[_0x25ba55(0xde)](a0_0x4c15d8[_0x25ba55(0xd4)](_0x25ba55(0x8b)+_0x1addf1['message'])),this[_0x25ba55(0xc3)]();}}async[a0_0x38e706(0xd6)](){const _0xbd0e59=a0_0x38e706,_0x251d68=new ChatGoogleGenerativeAI({'apiKey':this[_0xbd0e59(0x9a)][_0xbd0e59(0xae)],'modelName':_0xbd0e59(0xd2),'maxOutputTokens':0x3c,'temperature':0.7}),_0x16953a=PromptTemplate[_0xbd0e59(0xba)](_0xbd0e59(0xdd));return _0x16953a['pipe'](_0x251d68)[_0xbd0e59(0xbc)](new StringOutputParser());}[a0_0x38e706(0xc3)](){const _0x44330a=a0_0x38e706,_0x20fc2f=[_0x44330a(0x93),'I\x20see\x20what\x20you\x20mean.',_0x44330a(0xb8),_0x44330a(0xd5),_0x44330a(0xb9)];return _0x20fc2f[Math[_0x44330a(0xca)](Math[_0x44330a(0x90)]()*_0x20fc2f['length'])];}}function loadConfigurationFile(_0x3e61c6=CONFIG_FILE_PATH){const _0x2553bf=a0_0x38e706;try{const _0x1bdc14=a0_0x52d5eb[_0x2553bf(0x89)](_0x3e61c6,'utf8');return JSON[_0x2553bf(0x96)](_0x1bdc14);}catch(_0x4f0e8a){throw new Error('Failed\x20to\x20load\x20configuration:\x20'+_0x4f0e8a[_0x2553bf(0xc5)]);}}function loadMessagesList(_0x31ed0d=MESSAGES_FILE_PATH){const _0x5244d9=a0_0x38e706;try{const _0x4d7f05=a0_0x52d5eb[_0x5244d9(0x89)](_0x31ed0d,'utf8');return _0x4d7f05[_0x5244d9(0xd3)]('\x0a')['map'](_0x356cd5=>_0x356cd5[_0x5244d9(0xa7)]())[_0x5244d9(0xbd)](_0x4f73bb=>_0x4f73bb[_0x5244d9(0x8f)]>0x0);}catch(_0x44a845){throw new Error(_0x5244d9(0x8e)+_0x44a845[_0x5244d9(0xc5)]);}}const lastSentMessages=new Map();function a0_0x3b60(){const _0xe87a4b=['restartDelay','discriminator','green','No\x20messages\x20found\x20in\x20chat.txt','getFallbackResponse','1864575klSSPt','message','Discord\x20Auto','userInfo','sendChannelMessage','14TyZoqV','floor','headers','cyan','default','/messages','14Mmevdu','[ERROR]\x20Token\x20processing\x20failed:\x20','author','gemini-pro','split','red','Cool!','createGeminiChain','textSync','channelIds','[AI\x20ERROR]\x20','308181JEYACk','get','generateAIReply','You\x20are\x20a\x20friendly\x20chat\x20assistant.\x20Respond\x20naturally\x20and\x20briefly\x20(maximum\x202\x20sentences)\x20to\x20this\x20message:\x20{message}','error','Failed\x20to\x20fetch\x20user\x20details:\x20','repeat','https://discord.com/api/v9','4htrwzz','Standard','fetchUserDetails','post','readFileSync','tokens','[GEMINI\x20ERROR]\x20','\x20seconds\x20before\x20restarting...','/channels/','Failed\x20to\x20load\x20messages:\x20','length','random','10lTriAi','userId','That\x27s\x20interesting!','data','1374109MakAbM','parse','[INFO]\x20Waiting\x20','exit','23911cUONbn','config','yellow','isArray','2001780JxcHPu','No\x20channel\x20IDs\x20provided\x20in\x20config.json','[CRITICAL\x20ERROR]\x20','apiUrl','fetchRecentMessages','content','tokenDelay','invoke','[FATAL\x20ERROR]\x20','/messages?limit=','trim',']\x20=>\x20Sent\x20to\x20Channel\x20','catch','Discord\x20Auto\x20Chat','includes','initialize','config/chat.txt','googleApiKey','slice','\x20seconds\x20before\x20processing\x20the\x20next\x20token...','651480RkXQol',']\x20=>\x20AI\x20Reply\x20in\x20Channel\x20','1737616UDdXyS','isOwnMessage','set','Created\x20by\x20Imamgg','[INFO]\x20[','Thanks\x20for\x20sharing!','Interesting\x20perspective!','fromTemplate','replyToMessage','pipe','filter','log'];a0_0x3b60=function(){return _0xe87a4b;};return a0_0x3b60();}function getRandomMessage(_0x2146d2,_0x3c8d6b){const _0x132272=a0_0x38e706,_0x8ee46c=lastSentMessages[_0x132272(0xdb)](_0x3c8d6b)||[];let _0x5ff2d9=_0x2146d2[_0x132272(0xbd)](_0x10c452=>!_0x8ee46c[_0x132272(0xab)](_0x10c452));_0x5ff2d9[_0x132272(0x8f)]===0x0&&(_0x5ff2d9=_0x2146d2,lastSentMessages[_0x132272(0xb5)](_0x3c8d6b,[]));const _0x3b177b=_0x5ff2d9[Math['floor'](Math[_0x132272(0x90)]()*_0x5ff2d9['length'])],_0x468534=[...lastSentMessages['get'](_0x3c8d6b)||[],_0x3b177b];return lastSentMessages['set'](_0x3c8d6b,_0x468534[_0x132272(0xaf)](-0x5)),_0x3b177b;}function validateConfiguration(_0x2a674b,_0x243222){const _0xeb7b43=a0_0x38e706;if(!_0x2a674b[_0xeb7b43(0x8a)]||!Array[_0xeb7b43(0x9c)](_0x2a674b['tokens']))throw new Error('No\x20bot\x20tokens\x20provided\x20in\x20config.json');if(!_0x2a674b[_0xeb7b43(0xd8)]||!Array[_0xeb7b43(0x9c)](_0x2a674b['channelIds']))throw new Error(_0xeb7b43(0x9e));if(!_0x243222[_0xeb7b43(0x8f)])throw new Error(_0xeb7b43(0xc2));}async function generateContextualReply(_0x5d5ec2,_0xad86e2){const _0x472d48=a0_0x38e706;try{return await _0x5d5ec2[_0x472d48(0xdc)](_0xad86e2);}catch(_0x597297){return console['error'](a0_0x4c15d8['red'](_0x472d48(0xd9)+_0x597297[_0x472d48(0xc5)])),_0x5d5ec2['getFallbackResponse']();}}async function sleep(_0x49c327){return new Promise(_0x5129bf=>setTimeout(_0x5129bf,_0x49c327*0x3e8));}async function startAutoChatBot(){const _0x5c2324=a0_0x38e706;try{displayWelcomeBanner();const _0x1d1030=loadConfigurationFile(),_0x20c276=loadMessagesList();validateConfiguration(_0x1d1030,_0x20c276);const _0x46c019=_0x1d1030[_0x5c2324(0xa3)]||0x5,_0x55afdb=_0x1d1030['messageDelay']||0x14,_0x2952dd=_0x1d1030[_0x5c2324(0xbf)]||0x1e;while(!![]){for(const _0x350921 of _0x1d1030[_0x5c2324(0x8a)]){try{const _0x4519ee=await new DiscordAutoChat(_0x350921)[_0x5c2324(0xac)]();_0x4519ee[_0x5c2324(0x9a)]=_0x1d1030;for(const _0x54e565 of _0x1d1030['channelIds']){const _0x3f4f70=Math[_0x5c2324(0x90)]()<0.9;if(_0x3f4f70){const _0x16b742=await _0x4519ee[_0x5c2324(0xa1)](_0x54e565,0x14),_0x23d003=_0x16b742[_0x5c2324(0xbd)](_0x373af9=>!_0x4519ee['isOwnMessage'](_0x373af9));if(_0x23d003[_0x5c2324(0x8f)]>0x0){const _0x5a7fa3=_0x23d003[Math['floor'](Math[_0x5c2324(0x90)]()*_0x23d003['length'])],_0x4c5785=await generateContextualReply(_0x4519ee,_0x5a7fa3['content']),_0x109795=await _0x4519ee[_0x5c2324(0xbb)](_0x54e565,_0x5a7fa3['id'],_0x4c5785);_0x109795[_0x5c2324(0xa2)]&&console[_0x5c2324(0xbe)](a0_0x4c15d8[_0x5c2324(0xc1)](_0x5c2324(0xb7)+_0x4519ee[_0x5c2324(0xc7)]+_0x5c2324(0xb2)+_0x54e565+':\x20'+_0x4c5785));}}else{const _0x34fbe7=getRandomMessage(_0x20c276,_0x54e565),_0x2a6a05=await _0x4519ee[_0x5c2324(0xc8)](_0x54e565,_0x34fbe7);_0x2a6a05[_0x5c2324(0xa2)]&&console[_0x5c2324(0xbe)](a0_0x4c15d8['green'](_0x5c2324(0xb7)+_0x4519ee[_0x5c2324(0xc7)]+_0x5c2324(0xa8)+_0x54e565+':\x20'+_0x34fbe7));}await sleep(_0x55afdb);}console[_0x5c2324(0xbe)](a0_0x4c15d8[_0x5c2324(0x9b)](_0x5c2324(0x97)+_0x46c019+_0x5c2324(0xb0))),await sleep(_0x46c019);}catch(_0x40a990){console[_0x5c2324(0xde)](a0_0x4c15d8['red'](_0x5c2324(0xd0)+_0x40a990['message']));}}console[_0x5c2324(0xbe)](a0_0x4c15d8[_0x5c2324(0x9b)](_0x5c2324(0x97)+_0x2952dd+_0x5c2324(0x8c))),await sleep(_0x2952dd);}}catch(_0x3d58b1){console['error'](a0_0x4c15d8[_0x5c2324(0xd4)](_0x5c2324(0x9f)+_0x3d58b1[_0x5c2324(0xc5)])),process[_0x5c2324(0x98)](0x1);}}startAutoChatBot()[a0_0x38e706(0xa9)](_0x55322e=>{const _0x5c9e9a=a0_0x38e706;console['error'](a0_0x4c15d8[_0x5c9e9a(0xd4)](_0x5c9e9a(0xa5)+_0x55322e[_0x5c9e9a(0xc5)])),process[_0x5c9e9a(0x98)](0x1);});
+import fs from "fs";
+import axios from "axios";
+import chalk from "chalk";
+import figlet from "figlet";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { PromptTemplate } from "@langchain/core/prompts";
+import { StringOutputParser } from "@langchain/core/output_parsers";
+
+const DISCORD_API_BASE_URL = "https://discord.com/api/v9";
+const CONFIG_FILE_PATH = "config/config.json";
+const MESSAGES_FILE_PATH = "config/chat.txt";
+
+function displayWelcomeBanner() {
+  console.log(
+    chalk.blue(
+      figlet.textSync("Discord Auto", {
+        font: "Standard",
+        horizontalLayout: "default",
+        verticalLayout: "default",
+        width: 80,
+        whitespaceBreak: true,
+      })
+    )
+  );
+
+  console.log(chalk.cyan("=".repeat(50)));
+  console.log(chalk.cyan("Discord Auto"));
+  console.log(chalk.cyan("Created by Imamgg"));
+  console.log(chalk.cyan("=".repeat(50)));
+}
+
+class DiscordAutoChat {
+  constructor(token) {
+    this.apiUrl = DISCORD_API_BASE_URL;
+    this.headers = {
+      Authorization: token,
+    };
+    this.userInfo = null;
+    this.repliedMessages = new Set();
+  }
+
+  isOwnMessage(message) {
+    return message.author.id === this.userId;
+  }
+
+  async initialize() {
+    const userDetails = await this.fetchUserDetails();
+    this.userInfo = `${userDetails.username}#${userDetails.discriminator}`;
+    this.userId = userDetails.id;
+    return this;
+  }
+
+  async fetchUserDetails() {
+    try {
+      const response = await axios.get(`${this.apiUrl}/users/@me`, {
+        headers: this.headers,
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch user details: ${error.message}`);
+    }
+  }
+
+  async sendChannelMessage(channelId, content) {
+    try {
+      const response = await axios.post(
+        `${this.apiUrl}/channels/${channelId}/messages`,
+        { content },
+        { headers: this.headers }
+      );
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to send message: ${error.message}`);
+    }
+  }
+
+  async fetchRecentMessages(channelId, limit = 50) {
+    try {
+      const response = await axios.get(
+        `${this.apiUrl}/channels/${channelId}/messages?limit=${limit}`,
+        { headers: this.headers }
+      );
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to fetch messages: ${error.message}`);
+    }
+  }
+
+  async replyToMessage(channelId, messageId, content) {
+    try {
+      const response = await axios.post(
+        `${this.apiUrl}/channels/${channelId}/messages`,
+        {
+          content,
+          message_reference: {
+            message_id: messageId,
+            channel_id: channelId,
+          },
+        },
+        { headers: this.headers }
+      );
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to reply to message: ${error.message}`);
+    }
+  }
+
+  async generateAIReply(messageContent) {
+    try {
+      const chain = await this.createGeminiChain();
+      const response = await chain.invoke({
+        message: messageContent,
+      });
+      return response;
+    } catch (error) {
+      console.error(chalk.red(`[GEMINI ERROR] ${error.message}`));
+      return this.getFallbackResponse();
+    }
+  }
+
+  async createGeminiChain() {
+    const model = new ChatGoogleGenerativeAI({
+      apiKey: this.config.googleApiKey,
+      modelName: "gemini-pro",
+      maxOutputTokens: 60,
+      temperature: 0.7,
+    });
+
+    const prompt = PromptTemplate.fromTemplate(
+      "Put yourself in the shoes of a human being. Never mention that you are an AI and never give an AI-like answer. Adapt your response based on the context of the conversation. Keep it interesting, friendly, relevant and keep your answers short. Respond to this message: {message}"
+    );
+
+    return prompt.pipe(model).pipe(new StringOutputParser());
+  }
+  getFallbackResponse() {
+    const fallbackResponses = [
+      "That's interesting!",
+      "I see what you mean.",
+      "Thanks for sharing!",
+      "Cool!",
+      "Interesting perspective!",
+    ];
+    return fallbackResponses[
+      Math.floor(Math.random() * fallbackResponses.length)
+    ];
+  }
+
+  async hasReplied(messageId) {
+    if (this.repliedMessages.has(messageId)) {
+      return true;
+    }
+
+    try {
+      const messages = await this.fetchRecentMessages(channelId, 100);
+      const hasReply = messages.some(
+        (msg) =>
+          msg.referenced_message &&
+          msg.referenced_message.id === messageId &&
+          this.isOwnMessage(msg)
+      );
+
+      if (hasReply) {
+        this.repliedMessages.add(messageId);
+      }
+
+      return hasReply;
+    } catch (error) {
+      console.error(
+        chalk.red(`[ERROR] Failed to check reply status: ${error.message}`)
+      );
+      return false;
+    }
+  }
+}
+
+function loadConfigurationFile(configPath = CONFIG_FILE_PATH) {
+  try {
+    const configContent = fs.readFileSync(configPath, "utf8");
+    return JSON.parse(configContent);
+  } catch (error) {
+    throw new Error(`Failed to load configuration: ${error.message}`);
+  }
+}
+
+function loadMessagesList(messagesPath = MESSAGES_FILE_PATH) {
+  try {
+    const messagesContent = fs.readFileSync(messagesPath, "utf8");
+    return messagesContent
+      .split("\n")
+      .map((message) => message.trim())
+      .filter((message) => message.length > 0);
+  } catch (error) {
+    throw new Error(`Failed to load messages: ${error.message}`);
+  }
+}
+
+// Add this after other const declarations
+const lastSentMessages = new Map();
+
+function getRandomMessage(messages, channelId) {
+  const previousMessages = lastSentMessages.get(channelId) || [];
+  let availableMessages = messages.filter(
+    (msg) => !previousMessages.includes(msg)
+  );
+  if (availableMessages.length === 0) {
+    availableMessages = messages;
+    lastSentMessages.set(channelId, []);
+  }
+  const randomMessage =
+    availableMessages[Math.floor(Math.random() * availableMessages.length)];
+  const updatedHistory = [
+    ...(lastSentMessages.get(channelId) || []),
+    randomMessage,
+  ];
+  lastSentMessages.set(channelId, updatedHistory.slice(-5));
+  return randomMessage;
+}
+
+function validateConfiguration(config, messages) {
+  if (!config.tokens || !Array.isArray(config.tokens)) {
+    throw new Error("No bot tokens provided in config.json");
+  }
+  if (!config.channelIds || !Array.isArray(config.channelIds)) {
+    throw new Error("No channel IDs provided in config.json");
+  }
+  if (!messages.length) {
+    throw new Error("No messages found in chat.txt");
+  }
+}
+
+async function generateContextualReply(bot, messageContent) {
+  try {
+    return await bot.generateAIReply(messageContent);
+  } catch (error) {
+    console.error(chalk.red(`[AI ERROR] ${error.message}`));
+    return bot.getFallbackResponse();
+  }
+}
+
+async function sleep(seconds) {
+  return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+}
+
+async function startAutoChatBot() {
+  try {
+    displayWelcomeBanner();
+    // Load configuration and messages
+    const config = loadConfigurationFile();
+    const messages = loadMessagesList();
+    validateConfiguration(config, messages);
+
+    // Get delays from config
+    const tokenDelay = config.tokenDelay || 5;
+    const messageDelay = config.messageDelay || 20;
+    const restartDelay = config.restartDelay || 30;
+
+    while (true) {
+      // Process each token
+      for (const token of config.tokens) {
+        try {
+          const bot = await new DiscordAutoChat(token).initialize();
+          bot.config = config;
+          for (const channelId of config.channelIds) {
+            const shouldReply = Math.random() < 0.8; // 80% chance to reply
+
+            if (shouldReply) {
+              // Fetch recent messages and pick one to reply to
+              const recentMessages = await bot.fetchRecentMessages(
+                channelId,
+                20
+              );
+              const validMessages = recentMessages.filter(
+                (msg) =>
+                  !bot.isOwnMessage(msg) && !bot.repliedMessages.has(msg.id)
+              );
+
+              if (validMessages.length > 0) {
+                const randomMessage =
+                  validMessages[
+                    Math.floor(Math.random() * validMessages.length)
+                  ];
+
+                if (!(await bot.hasReplied(randomMessage.id))) {
+                  const reply = await generateContextualReply(
+                    bot,
+                    randomMessage.content
+                  );
+                  const response = await bot.replyToMessage(
+                    channelId,
+                    randomMessage.id,
+                    reply
+                  );
+
+                  if (response.content) {
+                    bot.repliedMessages.add(randomMessage.id);
+                    console.log(
+                      chalk.green(
+                        `[INFO] [${bot.userInfo}] => AI Reply in Channel ${channelId}: ${reply}`
+                      )
+                    );
+                  }
+                }
+              }
+            } else {
+              const randomMessage = getRandomMessage(messages, channelId);
+              const response = await bot.sendChannelMessage(
+                channelId,
+                randomMessage
+              );
+              if (response.content) {
+                console.log(
+                  chalk.green(
+                    `[INFO] [${bot.userInfo}] => Sent to Channel ${channelId}: ${randomMessage}`
+                  )
+                );
+              }
+            }
+            await sleep(messageDelay);
+          }
+          console.log(
+            chalk.yellow(
+              `[INFO] Waiting ${tokenDelay} seconds before processing the next token...`
+            )
+          );
+          await sleep(tokenDelay);
+        } catch (error) {
+          console.error(
+            chalk.red(`[ERROR] Token processing failed: ${error.message}`)
+          );
+        }
+      }
+      console.log(
+        chalk.yellow(
+          `[INFO] Waiting ${restartDelay} seconds before restarting...`
+        )
+      );
+      await sleep(restartDelay);
+    }
+  } catch (error) {
+    console.error(chalk.red(`[CRITICAL ERROR] ${error.message}`));
+    process.exit(1);
+  }
+}
+
+// Start the bot
+startAutoChatBot().catch((error) => {
+  console.error(chalk.red(`[FATAL ERROR] ${error.message}`));
+  process.exit(1);
+});
