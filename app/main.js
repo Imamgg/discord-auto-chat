@@ -29,7 +29,7 @@ function displayWelcomeBanner() {
   );
 
   console.log(chalk.cyan("=".repeat(50)));
-  console.log(chalk.cyan("Discord Auto"));
+  console.log(chalk.cyan("Discord Auto Chat"));
   console.log(chalk.cyan("Created by Imamgg"));
   console.log(chalk.cyan("=".repeat(50)));
 }
@@ -151,7 +151,7 @@ class DiscordAutoChat {
   async createGeminiChain() {
     const model = new ChatGoogleGenerativeAI({
       apiKey: this.config.googleApiKey,
-      modelName: "gemini-pro",
+      modelName: "gemini-2.0-flash",
       maxOutputTokens: 60,
       temperature: 0.7,
     });
@@ -310,7 +310,7 @@ async function startAutoChatBot() {
           const bot = await new DiscordAutoChat(token).initialize();
           bot.config = config;
           for (const channelId of config.channelIds) {
-            const shouldReply = Math.random() < 0.8; // 80% chance to reply
+            const shouldReply = Math.random() < 0.7; // 70% chance to reply
 
             if (shouldReply) {
               const recentMessages = await bot.fetchRecentMessages(

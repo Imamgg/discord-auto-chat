@@ -37,9 +37,9 @@ Before you begin, ensure you have the following installed:
    {
    "tokens": ["bot-token-1", "bot-token-2"],
    "channelIds": ["channel-id-1", "channel-id-2"],
-   "googleApiKey": "googleGemini-api-key",
-   "tokenDelay": 5, # # Delay for each token processing in seconds
-   "messageDelay": 20, # # Delay for each message sent in seconds
+   "googleApiKey": "Gemini-api-key",
+   "tokenDelay": 5, # Delay for each token processing in seconds
+   "messageDelay": 20, # Delay for each message sent in seconds
    "restartDelay": 30 # Delay before restarting the bot in seconds
    }
 
