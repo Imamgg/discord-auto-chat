@@ -5,6 +5,11 @@ import figlet from "figlet";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { PromptTemplate } from "@langchain/core/prompts";
 import { StringOutputParser } from "@langchain/core/output_parsers";
+import {
+  DiscordError,
+  ErrorTypes,
+  retryOperation,
+} from "../utils/errorHandler.js";
 
 const DISCORD_API_BASE_URL = "https://discord.com/api/v9";
 const CONFIG_FILE_PATH = "config/config.json";
@@ -52,25 +57,46 @@ class DiscordAutoChat {
 
   async fetchUserDetails() {
     try {
-      const response = await axios.get(`${this.apiUrl}/users/@me`, {
-        headers: this.headers,
+      return await retryOperation(async () => {
+        const response = await axios.get(`${this.apiUrl}/users/@me`, {
+          headers: this.headers,
+        });
+        return response.data;
       });
-      return response.data;
     } catch (error) {
-      throw new Error(`Failed to fetch user details: ${error.message}`);
+      if (error.response?.status === 401) {
+        throw new DiscordError("Invalid token", ErrorTypes.AUTH_ERROR);
+      }
+      throw new DiscordError(
+        `Failed to fetch user details: ${error.message}`,
+        ErrorTypes.API_ERROR,
+        { originalError: error }
+      );
     }
   }
 
   async sendChannelMessage(channelId, content) {
     try {
-      const response = await axios.post(
-        `${this.apiUrl}/channels/${channelId}/messages`,
-        { content },
-        { headers: this.headers }
-      );
-      return response.data;
+      return await retryOperation(async () => {
+        const response = await axios.post(
+          `${this.apiUrl}/channels/${channelId}/messages`,
+          { content },
+          { headers: this.headers }
+        );
+        return response.data;
+      });
     } catch (error) {
-      throw new Error(`Failed to send message: ${error.message}`);
+      if (error.response?.status === 403) {
+        throw new DiscordError(
+          "No permission to send messages",
+          ErrorTypes.AUTH_ERROR
+        );
+      }
+      throw new DiscordError(
+        `Failed to send message: ${error.message}`,
+        ErrorTypes.API_ERROR,
+        { channelId, originalError: error }
+      );
     }
   }
 
@@ -108,13 +134,17 @@ class DiscordAutoChat {
   async generateAIReply(messageContent) {
     try {
       const chain = await this.createGeminiChain();
-      const response = await chain.invoke({
-        message: messageContent,
+      const response = await retryOperation(async () => {
+        return await chain.invoke({ message: messageContent });
       });
       return response;
     } catch (error) {
       console.error(chalk.red(`[GEMINI ERROR] ${error.message}`));
-      return this.getFallbackResponse();
+      throw new DiscordError(
+        `AI generation failed: ${error.message}`,
+        ErrorTypes.AI_ERROR,
+        { messageContent }
+      );
     }
   }
 
@@ -194,7 +224,6 @@ function loadMessagesList(messagesPath = MESSAGES_FILE_PATH) {
   }
 }
 
-// Add this after other const declarations
 const lastSentMessages = new Map();
 
 function getRandomMessage(messages, channelId) {
@@ -217,14 +246,37 @@ function getRandomMessage(messages, channelId) {
 }
 
 function validateConfiguration(config, messages) {
-  if (!config.tokens || !Array.isArray(config.tokens)) {
-    throw new Error("No bot tokens provided in config.json");
+  if (
+    !config.tokens ||
+    !Array.isArray(config.tokens) ||
+    config.tokens.length === 0
+  ) {
+    throw new DiscordError(
+      "No bot tokens provided in config.json",
+      ErrorTypes.CONFIG_ERROR
+    );
   }
-  if (!config.channelIds || !Array.isArray(config.channelIds)) {
-    throw new Error("No channel IDs provided in config.json");
+  if (
+    !config.channelIds ||
+    !Array.isArray(config.channelIds) ||
+    config.channelIds.length === 0
+  ) {
+    throw new DiscordError(
+      "No channel IDs provided in config.json",
+      ErrorTypes.CONFIG_ERROR
+    );
+  }
+  if (!config.googleApiKey) {
+    throw new DiscordError(
+      "Google API key is missing in config.json",
+      ErrorTypes.CONFIG_ERROR
+    );
   }
   if (!messages.length) {
-    throw new Error("No messages found in chat.txt");
+    throw new DiscordError(
+      "No messages found in chat.txt",
+      ErrorTypes.CONFIG_ERROR
+    );
   }
 }
 
@@ -244,18 +296,15 @@ async function sleep(seconds) {
 async function startAutoChatBot() {
   try {
     displayWelcomeBanner();
-    // Load configuration and messages
     const config = loadConfigurationFile();
     const messages = loadMessagesList();
     validateConfiguration(config, messages);
 
-    // Get delays from config
     const tokenDelay = config.tokenDelay || 5;
     const messageDelay = config.messageDelay || 20;
     const restartDelay = config.restartDelay || 30;
 
     while (true) {
-      // Process each token
       for (const token of config.tokens) {
         try {
           const bot = await new DiscordAutoChat(token).initialize();
@@ -264,7 +313,6 @@ async function startAutoChatBot() {
             const shouldReply = Math.random() < 0.8; // 80% chance to reply
 
             if (shouldReply) {
-              // Fetch recent messages and pick one to reply to
               const recentMessages = await bot.fetchRecentMessages(
                 channelId,
                 20
@@ -324,9 +372,18 @@ async function startAutoChatBot() {
           );
           await sleep(tokenDelay);
         } catch (error) {
-          console.error(
-            chalk.red(`[ERROR] Token processing failed: ${error.message}`)
-          );
+          if (error instanceof DiscordError) {
+            console.error(chalk.red(`[${error.type}] ${error.message}`));
+            if (error.type === ErrorTypes.AUTH_ERROR) {
+              console.error(
+                chalk.yellow(`Skipping invalid token: ${token.slice(0, 10)}...`)
+              );
+              continue;
+            }
+          } else {
+            console.error(chalk.red(`[UNEXPECTED ERROR] ${error.message}`));
+          }
+          await sleep(tokenDelay);
         }
       }
       console.log(
@@ -337,7 +394,18 @@ async function startAutoChatBot() {
       await sleep(restartDelay);
     }
   } catch (error) {
-    console.error(chalk.red(`[CRITICAL ERROR] ${error.message}`));
+    if (error instanceof DiscordError) {
+      console.error(
+        chalk.red(`[CRITICAL ERROR] [${error.type}] ${error.message}`)
+      );
+      if (error.details) {
+        console.error(
+          chalk.gray("Error details:", JSON.stringify(error.details, null, 2))
+        );
+      }
+    } else {
+      console.error(chalk.red(`[FATAL ERROR] ${error.message}`));
+    }
     process.exit(1);
   }
 }
